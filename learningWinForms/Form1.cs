@@ -25,7 +25,7 @@ namespace learningWinForms
         private void Act(object sender, EventArgs e)
         {
             this.BackColor = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
-            Form1 form = new Form1();
+            Form2 form = new Form2();
             form.BackColor = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
             form.Location = new Point(rnd.Next(0, Screen.PrimaryScreen.Bounds.Width - form.Width), 
                              rnd.Next(0, Screen.PrimaryScreen.Bounds.Height - form.Height));
@@ -36,10 +36,7 @@ namespace learningWinForms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            BackColor = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
-            Location = new Point(rnd.Next(0, Screen.PrimaryScreen.Bounds.Width - Width),
-                             rnd.Next(0, Screen.PrimaryScreen.Bounds.Height - Height));
-            Size = new Size(rnd.Next(100, 600), rnd.Next(100, 600));
+            
         }
     }
 }
