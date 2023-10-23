@@ -7,19 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace learningWinForms
 {
-    public partial class Form2 : Form
+    public partial class Form3 : Form
     {
         Random rnd = new Random();
         Dictionary<int, string> picts = new Dictionary<int, string>();
 
-
-        public Form2()
+        public Form3()
         {
             InitializeComponent();
-
 
             picts.Add(1, @"C:\Users\anton\OneDrive\Изображения\Saved Pictures\bender-ass.png");
             picts.Add(2, @"C:\Users\anton\OneDrive\Изображения\Тяны\Резе\1640360396119486090.png");
@@ -33,12 +32,13 @@ namespace learningWinForms
             pictureBox1.BackgroundImage = Image.FromFile(picts[numPic]);
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
             SetPic();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void Form3_Load(object sender, EventArgs e)
         {
             SetPic();
         }
