@@ -12,6 +12,7 @@ namespace learningWinForms
 {
     public partial class Form2 : Form
     {
+
         Random rnd = new Random();
         Dictionary<int, string> picts = new Dictionary<int, string>();
 
