@@ -16,6 +16,12 @@ namespace learningWinForms
         Random rnd = new Random();
         string key;
 
+        int correct = 0;
+        int wrong = 0;
+
+
+        List<int> listPicts = new List<int>(); 
+
         class Picture
         {
             public string path;
@@ -28,10 +34,18 @@ namespace learningWinForms
         }
         void SetPic()
         {
-            int numPic = rnd.Next(1, 5);
+            sp:
+            int numPic = rnd.Next(1, 6);
+            if (listPicts.Contains(numPic))
+            {
+                goto sp;
+            }
+            listPicts.Add(numPic);
+
             pictureBox1.BackgroundImage = Image.FromFile(picts[numPic].path);
             key = picts[numPic].name;
         }
+
 
         public Form1()
         {
@@ -42,7 +56,7 @@ namespace learningWinForms
             picts.Add(2, new Picture("фрай", @"C:\Users\anton\OneDrive\Изображения\Saved Pictures\Фрай.jpeg"));
             picts.Add(3, new Picture("теренс и филип", @"C:\Users\anton\OneDrive\Изображения\Saved Pictures\terens-i-filip-yuzhnyj-park.jpg"));
             picts.Add(4, new Picture("тау", @"C:\Users\anton\OneDrive\Изображения\Работа\photo_2023-07-31_21-16-55.jpg"));
-
+            picts.Add(5, new Picture("резе", @"C:\Users\anton\OneDrive\Изображения\Тяны\Резе\Без названия.jpeg"));
      
         }
 
@@ -53,8 +67,7 @@ namespace learningWinForms
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            SetPic();
-            textBox1.Text = "";
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -66,14 +79,55 @@ namespace learningWinForms
         {
             if (textBox1.Text.ToLower() == key)
             {
-                MessageBox.Show("Правильно!");
+                correct++;
             }
             else
             {
-                textBox1.Text = "";
-                MessageBox.Show("Ошибка!");
-                textBox1.Focus();
+                wrong ++;   
             }
+            textBox1.Text = "";
+            textBox1.Focus();
+            labelRi.Text = $"Правильно - {correct}";
+            labelWr.Text = $"Неправильно - {wrong}";
+
+            if (correct+wrong == 5)
+            {
+                string text = "";
+
+                if (correct >= 3)
+                {
+                    text = "Вы прошли тест! Ваша оценка - " + correct;
+                }
+                else
+                {
+                    text = "Вы не прошли тест! Вы отчислены!";
+                }
+
+
+                MessageBox.Show(text);
+                Close();
+            }
+            SetPic();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            labelRi.Visible = true;
+            labelWr.Visible = true;
+            pictureBox1.Visible = true;
+            textBox1.Visible = true;
+            button1.Visible = true;
+            button2.Visible = false;
+            textBoxName.ReadOnly = true;
+        }
+
+        private void textBoxName_TextChanged(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(textBoxName.Text))
+            {
+                button2.Visible = true;
+            }
+            else { button2.Visible = false; }
         }
     }
 }
