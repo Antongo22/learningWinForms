@@ -25,231 +25,159 @@ namespace learningWinForms
             InitializeComponent(); 
         }
 
-
-        void AddTextAct(string operation)
-        {
-            if (!String.IsNullOrEmpty(textBox1.Text) && state != "s" && state != "e")
-            {
-                textBox1.Text += " " + operation + " ";
-                this.operation = operation;
-                state = "s";
-            }
-        }
-
-        void AddNumber(string num)
-        {
-            if (state == "f")
-            {
-                firstOperation += num;
-                textBox1.Text += num;
-            }
-            else if (state == "s")
-            {
-                secondOperation += num;
-                textBox1.Text += num;
-            }
-        }
-
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void checkBoxSys_CheckedChanged(object sender, EventArgs e)
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxSys.Checked)
+            if(radioButton1.Checked)
             {
-                buttonDecimal.Visible = true;
-                buttonBinary.Visible = true;
+                groupBox2.Enabled = false;
+                textBox1.Enabled = false;
+                textBox2.Enabled = false;
+                textBox3.Enabled = true;
+                pictureBox1.BackgroundImage = Image.FromFile("Шар.png");
             }
             else
             {
-                buttonDecimal.Visible = false;
-                buttonBinary.Visible = false;
+                groupBox2.Enabled = true;
+                textBox1.Enabled = true;
+                textBox2.Enabled = true;
+                textBox3.Enabled = false;
             }
         }
 
-        private void buttonCleanAll_Click(object sender, EventArgs e)
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            textBox1.Text = string.Empty;
-            firstOperation = "";
-            secondOperation = "";
-            state = "f";
+            if (radioButton2.Checked)
+            {
+                if (radioButton4.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир3.png");
+                }
+                if (radioButton5.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир4.png");
+                }
+                if (radioButton6.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир5.jpeg");
+                }
+            }
         }
 
-        private void button0_Click(object sender, EventArgs e)
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            AddNumber(button0.Text);
+            if (radioButton3.Checked)
+            {
+                if (radioButton4.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз3.jpg");
+                }
+                if (radioButton5.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз4.png");
+                }
+                if (radioButton6.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз5.jpg");
+                }
+            }
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton4.Checked)
+            {
+                if (radioButton2.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир3.png");
+                }
+                else
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз3.jpg");
+                }
+            }
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton5.Checked)
+            {
+                if (radioButton2.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир4.png");
+                }
+                else
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз4.png");
+                }
+            }
+        }
+
+        private void radioButton6_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (radioButton6.Checked)
+            {
+                if (radioButton2.Checked)
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Пир5.jpeg");
+                }
+                else
+                {
+                    pictureBox1.BackgroundImage = Image.FromFile("Приз5.jpg");
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddNumber(button1.Text);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            AddNumber(button2.Text);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            AddNumber(button3.Text);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            AddNumber(button4.Text);
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            AddNumber(button5.Text);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            AddNumber(button6.Text);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            AddNumber(button7.Text);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            AddNumber(button8.Text);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            AddNumber(button9.Text);
-        }
-
-        private void Fraction_Click(object sender, EventArgs e)
-        {
-            if(state == "f")
+            if(radioButton1.Checked)
             {
-                if (!firstOperation.Contains(",") && !String.IsNullOrEmpty(firstOperation))
+                if(double.TryParse(textBox3.Text, out double value) && value > 0)
                 {
-                    firstOperation += ",";
-                    textBox1.Text += ",";
+                    labelRes.Text = "v = " + Math.Round(((3.0/4.0) * Math.PI * value), 3);
                 }
             }
-            else
+            if (radioButton2.Checked)
             {
-                if (!secondOperation.Contains(",") && !String.IsNullOrEmpty(secondOperation))
+                if (double.TryParse(textBox1.Text, out double value1) && value1 > 0 && double.TryParse(textBox2.Text, out double value2) && value2 > 0)
                 {
-                    secondOperation += ",";
-                    textBox1.Text += ",";
+                    if(radioButton4.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round(1.0 /3.0 * ((Math.Sqrt(3) * value1 * value1) / 4 ) * value2, 3);
+                    }
+                    if (radioButton5.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round( (1.0 / 3.0) * value2 * Math.Pow(value1, 2), 3);
+                    }
+                    if (radioButton6.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round( 1.0 / 3.0 * ((5 * Math.Sqrt(3) * value1 * value1) / 4) * value2, 3);
+                    }
                 }
             }
-        }
-
-        private void buttonAddition_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonAddition.Text);
-        }
-
-        private void buttonSubtraction_Click(object sender, EventArgs e)
-        {
-            if (state == "f")
+            if (radioButton3.Checked)
             {
-                if (!firstOperation.Contains("-") && String.IsNullOrEmpty(firstOperation))
+                if(double.TryParse(textBox1.Text, out double value1) && value1 > 0 && double.TryParse(textBox2.Text, out double value2) && value2 > 0)
                 {
-                    firstOperation += "-";
-                    textBox1.Text += "-";
+                    if (radioButton4.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round(((Math.Sqrt(3) * value1 * value1) / 4) * value2, 3);
+                    }
+                    if (radioButton5.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round(value2 * Math.Pow(value1, 2), 3);
+                    }
+                    if (radioButton6.Checked)
+                    {
+                        labelRes.Text = "v = " + Math.Round( (((5 * Math.Sqrt(3) * value1 * value1) / 4) * value2), 3) ;
+
+                    }
                 }
-                else if (!String.IsNullOrEmpty(firstOperation))
-                {
-                    AddTextAct(buttonSubtraction.Text);
-                }
-            }
-            else
-            {
-                if (!secondOperation.Contains("-") && String.IsNullOrEmpty(secondOperation))
-                {
-                    secondOperation += "-";
-                    textBox1.Text += "-";
-                }
-            }
-        }
-
-        private void buttonMultiplication_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonMultiplication.Text);
-        }
-
-        private void buttonDivision_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonDivision.Text);
-        }
-
-        private void buttonDegree_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonDegree.Text);
-        }
-
-        private void buttonRoot_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonRoot.Text);
-            secondOperation = " ";
-        }
-
-        private void buttonRounding_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonRounding.Text);
-        }
-
-        private void buttonDecimal_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonDecimal.Text);
-            state = "e";
-            textBox1.Text += $" = {Convert.ToString(Convert.ToInt32(firstOperation, 2), 10)}";
-        }
-
-        private void buttonBinary_Click(object sender, EventArgs e)
-        {
-            AddTextAct(buttonBinary.Text);
-            state = "e";
-            textBox1.Text += $" = {Convert.ToString(Convert.ToInt32(firstOperation, 10), 2)}";
-        }
-
-        private void buttonEquals_Click(object sender, EventArgs e)
-        {
-            if (state == "s" && !String.IsNullOrEmpty(secondOperation))
-            {
-                switch (operation)
-                {
-                    case "+":
-                        textBox1.Text += $" = {double.Parse(firstOperation) + double.Parse(secondOperation)}";
-                        break;
-                    case "-":
-                        textBox1.Text += $" = {double.Parse(firstOperation) - double.Parse(secondOperation)}";
-                        break;
-                    case "×":
-                        textBox1.Text += $" = {double.Parse(firstOperation) * double.Parse(secondOperation)}";
-                        break;
-                    case "÷":
-                        if (secondOperation == "0")
-                        {
-                            return;
-                        }
-                        textBox1.Text += $" = {double.Parse(firstOperation) / double.Parse(secondOperation)}";
-                        break;
-                    case "^":
-                        textBox1.Text += $" = {Math.Pow(double.Parse(firstOperation), double.Parse(secondOperation))}";
-                        break;
-                    case "√":
-                        textBox1.Text += $" = {Math.Sqrt(double.Parse(firstOperation))}";
-                        break;
-                    case "Round":
-                        textBox1.Text += $" = {Math.Round(double.Parse(firstOperation), int.Parse(secondOperation))}";
-                        break;
-                }
-                state = "e";
             }
         }
     }
