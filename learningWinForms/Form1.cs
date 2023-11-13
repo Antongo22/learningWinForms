@@ -72,7 +72,7 @@ namespace learningWinForms
                 }
             }
 
-            labelPrise.Text = "Цена - " + finalPrise;
+            labelPrise.Text = "Цена - " + finalPrise * countOfPizza;
 
             if (radioButtonPickup.Checked)
             {
