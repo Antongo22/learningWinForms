@@ -12,11 +12,8 @@ namespace learningWinForms
 {
     public partial class Form1 : Form
     {
-
-        int countOfPizza = 1;
-        double finalPrise = 0;
-        float sale = 0.0f;
-
+        Dictionary<string, int> products = new Dictionary<string, int>();
+        
 
         public Form1()
         {
@@ -25,124 +22,51 @@ namespace learningWinForms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            SetResult();
+            
         }
 
-        void SetResult()
+        void Culc()
         {
-            if (int.TryParse(textBoxCount.Text, out int value) && value > 0)
+            int res = 0;
+
+            foreach(var item in products)
             {
-                countOfPizza = value;
+                res += item.Value;
             }
 
-            if (radioButtonMeat.Checked)
+            label1.Text = "Итого:" + res;
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            comboBox1.Items.Add(textBox1.Text);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
+            string[] prod = comboBox1.Text.Split(' ');
+
+            if (products.ContainsKey(prod[0]) )
             {
-                groupBoxVeg.Enabled = false;
-                groupBoxMeat.Enabled = true;
-
-                pictureBoxMeat.BackgroundImage = Image.FromFile(@"C:\Users\anton\source\repos\Antongo22\learningWinForms\learningWinForms\bin\Debug\Мясная.PNG");
-
-                finalPrise = 500;
-
-                if (checkBoxDobCheese.Checked)
-                {
-                    finalPrise += 100;
-                }
-                if (checkBoxDoubMeat.Checked)
-                {
-                    finalPrise += 150;
-                }
-            }
-            else
-            {
-                groupBoxVeg.Enabled = true;
-                groupBoxMeat.Enabled = false;
-
-                pictureBoxVeg.BackgroundImage = Image.FromFile(@"C:\Users\anton\source\repos\Antongo22\learningWinForms\learningWinForms\bin\Debug\Веганская.PNG");
-
-                finalPrise = 400;
-
-                if (checkBoxTomatos.Checked)
-                {
-                    finalPrise += 50;
-                }
-                if (checkBoxVegit.Checked)
-                {
-                    finalPrise += 70;
-                }
+                return;
             }
 
-            labelPrise.Text = "Цена - " + finalPrise * countOfPizza;
+            products.Add(prod[0], int.Parse(prod[1]) * int.Parse(textBox2.Text));
+            listBox1.Items.Add(comboBox1.Text + " x " + textBox2.Text);
 
-            if (radioButtonPickup.Checked)
-            {
-                sale = 0.9f;
-                labelSale.Text = "Скидка - 10%";
-            }
-            else if (radioButtonDelivery.Checked)
-            {
-                sale = 1.1f;
-                labelSale.Text = "Больше на 10%";
-            }
-            else
-            {
-                sale = 1f;
-                labelSale.Text = "Скидки нет";
-            }
-
-            finalPrise = finalPrise * sale * countOfPizza;
-
-            labelResult.Text = "Итого - " + Math.Round(finalPrise, 4);
+            Culc();
         }
 
-        private void radioButtonMeat_CheckedChanged(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            SetResult();
-        }
+            string[] prod = listBox1.SelectedItem.ToString().Split(' ');
 
-        private void radioButtonVegan_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
+            listBox1.Items.RemoveAt(listBox1.SelectedIndex);
 
-        private void textBoxCount_TextChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void checkBoxDobCheese_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void checkBoxDoubMeat_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void checkBoxTomatos_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void checkBoxVegit_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void radioButtonHall_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void radioButtonPickup_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
-        }
-
-        private void radioButtonDelivery_CheckedChanged(object sender, EventArgs e)
-        {
-            SetResult();
+            products.Remove(prod[0]);
+            Culc();
         }
     }
 }
