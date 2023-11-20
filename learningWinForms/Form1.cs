@@ -56,12 +56,23 @@ namespace learningWinForms
         private void buttonShow_Click(object sender, EventArgs e)
         {
             string text = "";
+            int adult = 0;
+            int minor = 0;
+
             foreach (Person person in persons)
             {
                 text += person + "\n";
+                if (person.age >= 18)
+                {
+                    adult++;
+                }
+                else
+                {
+                    minor++;
+                }
             }
 
-            MessageBox.Show(text);
+            MessageBox.Show(text + "\nСоверешеннолетних - " + adult + " Несоверешеннолетних - " + minor);
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)

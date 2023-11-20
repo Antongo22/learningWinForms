@@ -11,7 +11,7 @@ namespace learningWinForms
         public string FIO;
         public DateTime birth;
         public int age;
-        
+
         public Person(string FIO, DateTime birth)
         {
             this.FIO = FIO;
@@ -34,7 +34,7 @@ namespace learningWinForms
 
         public override string ToString()
         {
-            return $"{FIO} - {age} - {birth.ToString("dd:MM:yyyy")}";
+            return $"{FIO} - {age} - {birth.ToString("dd:MM:yyyy")} ";
         }
     }
 }
