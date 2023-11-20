@@ -8,18 +8,13 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace learningWinForms
 {
     public partial class Form1 : Form
     {
-        Timer timer;
-        int min = 0;
-        int hou = 0;
-        string time = "";
-
-        string h = "00";
-        string m = "00";
+        List<Person> persons = new List<Person>();
 
         public Form1()
         {
@@ -27,89 +22,80 @@ namespace learningWinForms
             InitializeComponent(); 
         }
 
-        void UpdateTime()
-        {
-            time = "Время - " + h + ":" + m;
-            this.Text = time;
-        }
-
-        void SetPic()
-        {
-            if (hou < 7)
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("00-00.png");
-            }
-            else if (hou < 10)
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("07-00.png");
-            }
-            else if (hou < 15)
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("10-00.png");
-            }
-            else if (hou < 18)
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("15-00.png");
-            }
-            else if (hou < 20)
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("18-00.png");
-            }
-            else
-            {
-                pictureBox1.BackgroundImage = Image.FromFile("20-00.png");
-            }
-
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer = new Timer();
-            timer.Interval = 1;
-            timer.Tick += Act;
-            timer.Start();
+            
         }
 
-        private void Act(object sender, EventArgs e)
+        private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (min < 60)
+            foreach(Person person in persons)
             {
-                if (min < 10)
+                if (person.FIO == textBox1.Text)
                 {
-                    m = "0" + min.ToString();
-                    min++;
-                }
-                else
-                {
-                   m = min.ToString();
-                    min++;
-                }
-            }
-            else
-            {
-                min = 0;
-                if (hou >= 23)
-                {
-                    hou = 0;
-                    h = "0" + hou.ToString();
+                    MessageBox.Show("Такой человек уже есть!");
                     return;
                 }
-                if (hou < 9)
-                {
-                    h = hou.ToString();
-                    hou++;
-                    h = "0" + hou.ToString();
-                }
-                else
-                {
-                    hou++;
-                    h = hou.ToString();
-                }
+            }
+        
+            persons.Add(new Person(textBox1.Text, dateTimePicker1.Value));
+            MessageBox.Show("Человек добавлен!");
+        }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonShow_Click(object sender, EventArgs e)
+        {
+            string text = "";
+            foreach (Person person in persons)
+            {
+                text += person + "\n";
             }
 
-            SetPic();
-            UpdateTime();
+            MessageBox.Show(text);
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < persons.Count; i++)
+            {
+                if (persons[i].FIO == textBox2.Text)
+                {
+                    persons[i] = new Person(textBox1.Text, dateTimePicker1.Value);
+                    MessageBox.Show("Данные изменены!");
+                    return;
+                }
+            }
+            MessageBox.Show("Таково человека не существует!");
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < persons.Count; i++)
+            {
+                if (persons[i].FIO == textBox2.Text)
+                {
+                    persons.Remove(persons[i]);                  
+                    MessageBox.Show("Данные удалены!");
+                    return;
+                }
+            }
+            MessageBox.Show("Нет данных о таком человеке!");
         }
     }
 }
