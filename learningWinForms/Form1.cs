@@ -8,13 +8,15 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
 
 namespace learningWinForms
 {
     public partial class Form1 : Form
     {
-        List<Person> persons = new List<Person>();
+        List<string> persons = new List<string>();
 
         public Form1()
         {
@@ -28,85 +30,109 @@ namespace learningWinForms
             
         }
 
-        private void buttonAdd_Click(object sender, EventArgs e)
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(Person person in persons)
+            // Открытие диалогового окна для выбора файла
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+
+            // Чтение данных из файла и сохранение в массив
+            string text = File.ReadAllText(openFileDialog.FileName);
+
+            textBox1.Text = text;
+        }
+
+        private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (person.FIO == textBox1.Text)
+                // Получаем путь к выбранному файлу
+                string filePath = saveFileDialog.FileName;
+
+                try
                 {
-                    MessageBox.Show("Такой человек уже есть!");
-                    return;
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    {
+                        writer.Write(textBox1.Text);
+                    }
+
+                    MessageBox.Show("Файл успешно сохранен.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        
-            persons.Add(new Person(textBox1.Text, dateTimePicker1.Value));
-            MessageBox.Show("Человек добавлен!");
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonShow_Click(object sender, EventArgs e)
-        {
-            string text = "";
-            int adult = 0;
-            int minor = 0;
-
-            foreach (Person person in persons)
+            if (!string.IsNullOrEmpty(textBox1.SelectedText))
             {
-                text += person + "\n";
-                if (person.age >= 18)
-                {
-                    adult++;
-                }
-                else
-                {
-                    minor++;
-                }
+                Clipboard.SetText(textBox1.SelectedText);
             }
-
-            MessageBox.Show(text + "\nСоверешеннолетних - " + adult + " Несоверешеннолетних - " + minor);
         }
 
-        private void buttonEdit_Click(object sender, EventArgs e)
+        private void вставитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < persons.Count; i++)
+            string clipboardText = Clipboard.GetText();
+
+            int cursorPosition = textBox1.SelectionStart;
+
+            textBox1.Text = textBox1.Text.Insert(cursorPosition, clipboardText);
+
+            textBox1.SelectionStart = cursorPosition + clipboardText.Length;
+        }
+
+        private void вырезатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Проверяем, есть ли в textBox1 выделенный текст
+            if (!string.IsNullOrEmpty(textBox1.SelectedText))
             {
-                if (persons[i].FIO == textBox2.Text)
-                {
-                    persons[i] = new Person(textBox1.Text, dateTimePicker1.Value);
-                    MessageBox.Show("Данные изменены!");
-                    return;
-                }
+                // Копируем выделенный текст в буфер обмена
+                Clipboard.SetText(textBox1.SelectedText);
+
+                // Затем удаляем выделенный текст из textBox1
+                textBox1.SelectedText = "";
             }
-            MessageBox.Show("Таково человека не существует!");
-
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void настройкиШрифтаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FontDialog fontDialog= new FontDialog();
+            fontDialog.ShowDialog();
+            textBox1.Font= fontDialog.Font;
         }
 
-        private void buttonDelete_Click(object sender, EventArgs e)
+        private void настройкиФонаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < persons.Count; i++)
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.ShowDialog();
+            textBox1.BackColor = colorDialog.Color;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            persons.Add(textBox2.Text);
+            textBox2.Text = "";
+            textBox1.Text = $"Уважаемые {GetPeople()}{Environment.NewLine}Приглашаем вас на всеобщую мобилизвцию!{Environment.NewLine}Явка обязательна.";
+        }
+
+        string GetPeople()
+        {
+            string per = "";
+            foreach (var person in persons)
             {
-                if (persons[i].FIO == textBox2.Text)
-                {
-                    persons.Remove(persons[i]);                  
-                    MessageBox.Show("Данные удалены!");
-                    return;
-                }
+                per += person + ", ";
             }
-            MessageBox.Show("Нет данных о таком человеке!");
+            return per;
         }
     }
 }
+    
